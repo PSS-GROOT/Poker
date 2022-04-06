@@ -100,54 +100,58 @@ namespace Poker_API.Services
         }
         public bool IsStraight(List<AnalyzedCard> cards)
         {
-            return cards.GroupBy(card => card.Value).Count() == cards.Count() && cards
+            var cardsStartFromAce = cards.Where(x => x.Value.ToString().Contains("12")
+                        || x.Value.ToString().Contains("0")
+                        || x.Value.ToString().Contains("1")
+                        || x.Value.ToString().Contains("2")
+                        || x.Value.ToString().Contains("3")).ToList().Count();
+            if(cardsStartFromAce >= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return cards.GroupBy(card => card.Value).Count() == cards.Count() && cards
                 .Max(card => card.Value - cards.Min(card => card.Value) == 4);
+            }
         }
 
         public bool CheckPair(List<AnalyzedCard> cards)
         {
-            //see if exactly 2 cards card the same rank.
             return cards.GroupBy(card => card.Value).Count(group => group.Count() == 2) == 1;
         }
 
         public bool CheckTwoPair(List<AnalyzedCard> cards)
         {
-            //see if there are 2 lots of exactly 2 cards card the same rank.
             return cards.GroupBy(card => card.Value).Count(group => group.Count() >= 2) == 2;
         }
 
         public bool CheckThreeOfAKind(List<AnalyzedCard> cards)
         {
-            //see if exactly 3 cards card the same rank.
             return cards.GroupBy(card => card.Value).Any(group => group.Count() == 3);
         }
 
         public bool CheckFlush(List<AnalyzedCard> cards)
         {
-            //see if 5 or more cards card the same rank.
             return cards.GroupBy(card => card.Suit).Count(group => group.Count() >= 5) == 1;
         }
 
         public bool CheckFullHouse(List<AnalyzedCard> cards)
         {
-            // check if full house and pair is true
             return CheckPair(cards) && CheckThreeOfAKind(cards);
         }
         public bool CheckFourOfAKind(List<AnalyzedCard> cards)
         {
-            //see if exactly 4 cards card the same rank.
             return cards.GroupBy(card => card.Value).Any(group => group.Count() == 4);
         }
 
         public bool CheckStraightFlush(List<AnalyzedCard> cards)
         {
-            // check if flush and straight are true.
             return CheckFlush(cards) && CheckStraight(cards);
         }
 
         public bool CheckRoyalFlush(List<AnalyzedCard> cards)
         {
-            // check if flush and biggest straight are true.
             return CheckFlush(cards) && CheckStraight(cards) && isRoyal(cards);
         }
 
