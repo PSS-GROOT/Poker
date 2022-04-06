@@ -101,7 +101,7 @@ namespace Poker_API.Services
         public bool IsStraight(List<AnalyzedCard> cards)
         {
             return cards.GroupBy(card => card.Value).Count() == cards.Count() && cards
-                .Max(card => Convert.ToInt32(card.Value) - cards.Min(card => Convert.ToInt32(card.Value)) == 4);
+                .Max(card => card.Value - cards.Min(card => card.Value) == 4);
         }
 
         public bool CheckPair(List<AnalyzedCard> cards)
