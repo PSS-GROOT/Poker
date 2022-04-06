@@ -157,8 +157,8 @@ namespace Poker_API.Services
                  || x.Value.ToString().Contains("9")
                  || x.Value.ToString().Contains("10")
                  || x.Value.ToString().Contains("11")
-                 || x.Value.ToString().Contains("12")).ToList();
-            if(validRoyal.Count >= 5) { return true; }
+                 || x.Value.ToString().Contains("12")).ToList().Count();
+            if(validRoyal >= 5) { return true; }
             else { return false; }
         }
     }
