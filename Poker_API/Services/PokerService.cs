@@ -100,11 +100,9 @@ namespace Poker_API.Services
         }
         public bool IsStraight(List<AnalyzedCard> cards)
         {
-            var cardsStartFromAce = cards.Where(x => x.Value.ToString().Contains("12")
-                        || x.Value.ToString().Contains("0")
-                        || x.Value.ToString().Contains("1")
-                        || x.Value.ToString().Contains("2")
-                        || x.Value.ToString().Contains("3")).ToList().Count();
+            List<string> circularStraightPattern = new List<string> { "12", "0", "1", "2", "3" };
+            var cardsStartFromAce = cards.Select(x => x.Value.ToString()).Intersect(circularStraightPattern).ToList().Count();
+      
             if(cardsStartFromAce >= 5)
             {
                 return true;
